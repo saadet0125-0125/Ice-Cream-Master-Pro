@@ -24,6 +24,30 @@ export default function Home() {
     },
   ]);
 
+  const [newMaterial, setNewMaterial] = useState({
+    name: "",
+    group: "",
+    fat: "",
+    msnf: "",
+    pac: "",
+    pod: "",
+    cost: "",
+  });
+
+  const addMaterial = () => {
+    setMaterials([...materials, newMaterial]);
+
+    setNewMaterial({
+      name: "",
+      group: "",
+      fat: "",
+      msnf: "",
+      pac: "",
+      pod: "",
+      cost: "",
+    });
+  };
+
   return (
     <main style={{ padding: 30, fontFamily: "Arial" }}>
       <h1>🍦 Ice Cream Master Pro</h1>
@@ -32,6 +56,47 @@ export default function Home() {
       <hr />
 
       <h3>🥛 Hammadde Veritabanı</h3>
+
+      <input placeholder="Hammadde adı"
+        value={newMaterial.name}
+        onChange={(e)=>setNewMaterial({...newMaterial,name:e.target.value})}
+      />
+
+      <input placeholder="Grup"
+        value={newMaterial.group}
+        onChange={(e)=>setNewMaterial({...newMaterial,group:e.target.value})}
+      />
+
+      <input placeholder="Yağ %"
+        value={newMaterial.fat}
+        onChange={(e)=>setNewMaterial({...newMaterial,fat:e.target.value})}
+      />
+
+      <input placeholder="MSNF %"
+        value={newMaterial.msnf}
+        onChange={(e)=>setNewMaterial({...newMaterial,msnf:e.target.value})}
+      />
+
+      <input placeholder="PAC"
+        value={newMaterial.pac}
+        onChange={(e)=>setNewMaterial({...newMaterial,pac:e.target.value})}
+      />
+
+      <input placeholder="POD"
+        value={newMaterial.pod}
+        onChange={(e)=>setNewMaterial({...newMaterial,pod:e.target.value})}
+      />
+
+      <input placeholder="Maliyet"
+        value={newMaterial.cost}
+        onChange={(e)=>setNewMaterial({...newMaterial,cost:e.target.value})}
+      />
+
+      <button onClick={addMaterial}>
+        + Hammadde Ekle
+      </button>
+
+      <br /><br />
 
       <table border={1} cellPadding={10}>
         <thead>
@@ -47,7 +112,7 @@ export default function Home() {
         </thead>
 
         <tbody>
-          {materials.map((item, index) => (
+          {materials.map((item,index)=>(
             <tr key={index}>
               <td>{item.name}</td>
               <td>{item.group}</td>
@@ -61,11 +126,6 @@ export default function Home() {
         </tbody>
       </table>
 
-      <br />
-
-      <button>
-        + Yeni Hammadde Ekle
-      </button>
     </main>
   );
 }

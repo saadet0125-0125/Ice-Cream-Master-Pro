@@ -4,94 +4,107 @@ import { useState } from "react";
 
 export default function RecipePage() {
 
-  const [recipeName, setRecipeName] = useState("");
-  const [amount, setAmount] = useState("");
-
-  const [ingredients, setIngredients] = useState([
-    {
-      name: "Süt",
-      kg: 1100,
-    },
-    {
-      name: "Şeker",
-      kg: 260,
-    },
-    {
-      name: "Yağsız Süt Tozu",
-      kg: 112.5,
-    },
-    {
-      name: "Glikoz",
-      kg: 100,
-    },
+  const [ingredients,setIngredients] = useState([
+    {name:"Süt",kg:1100},
+    {name:"Şeker",kg:260},
+    {name:"Yağsız Süt Tozu",kg:112.5},
+    {name:"Glikoz",kg:100}
   ]);
 
-  return (
-    <main style={{padding:30,fontFamily:"Arial"}}>
+  const [name,setName]=useState("");
+  const [kg,setKg]=useState("");
 
-      <h1>🧪 Reçete Oluşturucu</h1>
-      <h2>Ice Cream Master Pro</h2>
+  function addIngredient(){
 
-      <hr />
+    if(name && kg){
 
-      <label>Reçete Adı</label>
-      <br />
+      setIngredients([
+        ...ingredients,
+        {
+          name:name,
+          kg:Number(kg)
+        }
+      ]);
 
-      <input
-        placeholder="Örnek: Sade Dondurma"
-        value={recipeName}
-        onChange={(e)=>setRecipeName(e.target.value)}
-      />
+      setName("");
+      setKg("");
 
-      <br /><br />
+    }
 
-      <label>Üretim Miktarı (kg)</label>
-      <br />
+  }
 
-      <input
-        placeholder="Örnek: 1500 kg"
-        value={amount}
-        onChange={(e)=>setAmount(e.target.value)}
-      />
-
-      <br /><br />
-
-      <h3>🥛 İçerikler</h3>
-
-      <table border={1} cellPadding={10}>
-
-        <thead>
-          <tr>
-            <th>Hammadde</th>
-            <th>Miktar (kg)</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-        {ingredients.map((item,index)=>(
-
-          <tr key={index}>
-            <td>{item.name}</td>
-            <td>{item.kg}</td>
-          </tr>
-
-        ))}
-
-        </tbody>
-
-      </table>
-
-
-      <br />
-
-      <h3>📊 Analiz</h3>
-
-      <p>Toplam Yağ: Hesaplanacak</p>
-      <p>MSNF: Hesaplanacak</p>
-      <p>PAC: Hesaplanacak</p>
-      <p>POD: Hesaplanacak</p>
-
-    </main>
+  const totalKg = ingredients.reduce(
+    (toplam,item)=>toplam+item.kg,0
   );
+
+
+return (
+
+<main style={{padding:30,fontFamily:"Arial"}}>
+
+<h1>🍦 Ice Cream Master Pro</h1>
+
+<h2>🧪 Reçete Oluşturucu</h2>
+
+<hr/>
+
+<input
+placeholder="Hammadde adı"
+value={name}
+onChange={(e)=>setName(e.target.value)}
+/>
+
+
+<input
+placeholder="kg"
+value={kg}
+onChange={(e)=>setKg(e.target.value)}
+/>
+
+
+<button onClick={addIngredient}>
++ Ekle
+</button>
+
+
+<h3>Reçete İçeriği</h3>
+
+
+<table border={1} cellPadding={10}>
+
+<thead>
+<tr>
+<th>Hammadde</th>
+<th>Kg</th>
+</tr>
+</thead>
+
+
+<tbody>
+
+{
+ingredients.map((item,index)=>(
+
+<tr key={index}>
+<td>{item.name}</td>
+<td>{item.kg}</td>
+</tr>
+
+))
+}
+
+</tbody>
+
+</table>
+
+
+<h3>
+Toplam Karışım: {totalKg} kg
+</h3>
+
+
+</main>
+
+)
+
 }

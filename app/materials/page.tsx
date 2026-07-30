@@ -3,142 +3,136 @@
 import { useState } from "react";
 
 type Material = {
-  name: string;
-  category: string;
-  fat: string;
-  protein: string;
-  lactose: string;
-  water: string;
-  msnf: string;
-  density: string;
-  ph: string;
-  antibiotic: string;
-  supplier: string;
-  cost: string;
-  pac: string;
-  pod: string;
+  name:string;
+  category:string;
+  type:string;
+  batchTracking:string;
+  analysisRequired:string;
+  fat:string;
+  protein:string;
+  lactose:string;
+  water:string;
+  msnf:string;
+  density:string;
+  ph:string;
+  antibiotic:string;
+  supplier:string;
+  cost:string;
+  pac:string;
+  pod:string;
 };
 
 
-export default function MaterialsPage() {
+export default function MaterialsPage(){
 
-  const [materials, setMaterials] = useState<Material[]>([]);
-
-
-  const [form, setForm] = useState({
-    name:"",
-    fat:"",
-    protein:"",
-    lactose:"",
-    water:"",
-    msnf:"",
-    density:"",
-    ph:"",
-    antibiotic:"Yok",
-    supplier:"",
-    cost:""
-  });
+const [materials,setMaterials]=useState<Material[]>([]);
 
 
+const [form,setForm]=useState({
 
-  function categoryFinder(name:string){
+name:"",
+type:"Değişken",
+batchTracking:"Evet",
+analysisRequired:"Evet",
 
-    const n=name.toLowerCase();
+fat:"",
+protein:"",
+lactose:"",
+water:"",
+msnf:"",
+density:"",
+ph:"",
+antibiotic:"Yok",
 
+supplier:"",
+cost:""
 
-    if(
-      n.includes("süt") ||
-      n.includes("krema") ||
-      n.includes("toz")
-    )
-    return "Süt Ürünleri";
-
-
-    if(
-      n.includes("şeker") ||
-      n.includes("glikoz") ||
-      n.includes("dekstroz") ||
-      n.includes("fruktoz")
-    )
-    return "Şeker";
-
-
-    if(
-      n.includes("salep") ||
-      n.includes("gam") ||
-      n.includes("kitre")
-    )
-    return "Stabilizatör";
-
-
-    if(
-      n.includes("kakao") ||
-      n.includes("aroma")
-    )
-    return "Aroma";
-
-
-    return "Diğer";
-
-  }
+});
 
 
 
-  function calculatePAC(){
+function categoryFinder(name:string){
 
-    const sugar =
-    Number(form.lactose || 0);
-
-    return (sugar * 1.9).toFixed(2);
-
-  }
+const n=name.toLowerCase();
 
 
-
-  function calculatePOD(){
-
-    const sugar =
-    Number(form.lactose || 0);
-
-    return (sugar * 1).toFixed(2);
-
-  }
+if(
+n.includes("süt") ||
+n.includes("krema") ||
+n.includes("toz")
+)
+return "Süt Ürünleri";
 
 
-
-  function saveMaterial(){
-
-
-    const newMaterial:Material={
-
-      ...form,
-
-      category:
-      categoryFinder(form.name),
-
-      pac:
-      calculatePAC(),
-
-      pod:
-      calculatePOD()
-
-    };
+if(
+n.includes("şeker") ||
+n.includes("glikoz") ||
+n.includes("dekstroz")
+)
+return "Şeker";
 
 
-    setMaterials([
-      ...materials,
-      newMaterial
-    ]);
+if(
+n.includes("salep") ||
+n.includes("gam") ||
+n.includes("kitre")
+)
+return "Stabilizatör";
 
 
-  }
+return "Diğer";
+
+}
+
+
+
+function calculatePAC(){
+
+return (Number(form.lactose || 0)*1.9).toFixed(2);
+
+}
+
+
+function calculatePOD(){
+
+return (Number(form.lactose || 0)*1).toFixed(2);
+
+}
+
+
+
+function save(){
+
+
+const newMaterial={
+
+...form,
+
+category:
+categoryFinder(form.name),
+
+pac:
+calculatePAC(),
+
+pod:
+calculatePOD()
+
+};
+
+
+setMaterials([
+...materials,
+newMaterial
+]);
+
+
+}
 
 
 
 return (
 
-<main style={{padding:"30px"}}>
-
+<main style={{padding:30}}>
 
 <h1>🍦 Ice Cream Master Pro</h1>
 
@@ -151,9 +145,59 @@ return (
 <h3>Yeni Hammadde Kartı</h3>
 
 
-<input placeholder="Hammadde Adı"
+<input placeholder="Hammadde adı"
 onChange={(e)=>setForm({...form,name:e.target.value})}
 />
+
+
+<br/>
+
+
+<label>Hammadde Tipi</label>
+
+<select
+onChange={(e)=>setForm({...form,type:e.target.value})}
+>
+
+<option>Değişken</option>
+<option>Sabit</option>
+
+</select>
+
+
+
+<br/>
+
+
+<label>Parti Takibi</label>
+
+<select
+onChange={(e)=>setForm({...form,batchTracking:e.target.value})}
+>
+
+<option>Evet</option>
+<option>Hayır</option>
+
+</select>
+
+
+
+<br/>
+
+
+<label>Analiz Zorunluluğu</label>
+
+<select
+onChange={(e)=>setForm({...form,analysisRequired:e.target.value})}
+>
+
+<option>Evet</option>
+<option>Hayır</option>
+
+</select>
+
+
+<br/><br/>
 
 
 <input placeholder="Yağ %"
@@ -204,8 +248,8 @@ onChange={(e)=>setForm({...form,cost:e.target.value})}
 <br/><br/>
 
 
-<button onClick={saveMaterial}>
-💾 Kaydet
+<button onClick={save}>
+💾 Hammadde Kaydet
 </button>
 
 
@@ -218,13 +262,15 @@ onChange={(e)=>setForm({...form,cost:e.target.value})}
 <thead>
 
 <tr>
-<th>Hammadde</th>
+
+<th>Ad</th>
 <th>Kategori</th>
-<th>Yağ</th>
-<th>MSNF</th>
+<th>Tip</th>
+<th>Parti</th>
+<th>Analiz</th>
 <th>PAC</th>
 <th>POD</th>
-<th>Maliyet</th>
+
 </tr>
 
 </thead>
@@ -233,23 +279,24 @@ onChange={(e)=>setForm({...form,cost:e.target.value})}
 <tbody>
 
 {
-materials.map((m,index)=>(
+materials.map((m,i)=>(
 
-<tr key={index}>
+<tr key={i}>
 
 <td>{m.name}</td>
 
 <td>{m.category}</td>
 
-<td>{m.fat}</td>
+<td>{m.type}</td>
 
-<td>{m.msnf}</td>
+<td>{m.batchTracking}</td>
+
+<td>{m.analysisRequired}</td>
 
 <td>{m.pac}</td>
 
 <td>{m.pod}</td>
 
-<td>{m.cost}</td>
 
 </tr>
 
@@ -263,6 +310,6 @@ materials.map((m,index)=>(
 
 </main>
 
-);
+)
 
 }
